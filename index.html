@@ -5,10 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Alta de Negocio - Campo</title>
     <style>
-        /* Estilo general tipo Google Forms */
         body { 
             font-family: 'Roboto', Arial, sans-serif; 
-            background-color: #f0ebf8; /* Fondo suave clásico de formularios */
+            background-color: #f0ebf8; 
             margin: 0; 
             padding: 15px; 
             color: #202124; 
@@ -17,7 +16,6 @@
             max-width: 600px; 
             margin: auto; 
         }
-        /* Banner superior para el logo */
         .header-banner {
             background: #fff;
             border-radius: 8px;
@@ -33,11 +31,10 @@
             height: auto;
             display: inline-block;
         }
-        /* Tarjeta de título con franja de color arriba */
         .title-card {
             background: #fff;
             border-radius: 8px;
-            border-top: 10px solid #673ab7; /* Color corporativo clásico de formularios (morado) o puedes cambiarlo */
+            border-top: 10px solid #673ab7;
             padding: 22px 24px;
             margin-bottom: 12px;
             box-shadow: 0 1px 3px rgba(0,0,0,0.12);
@@ -53,7 +50,6 @@
             font-size: 14px;
             color: #5f6368;
         }
-        /* Tarjetas individuales por campo */
         .form-card {
             background: #fff;
             border-radius: 8px;
@@ -70,8 +66,7 @@
         }
         .required-star { color: #d93025; margin-left: 3px; }
         
-        /* Inputs estilo línea inferior de Google Forms */
-        input[type="text"], input[type="tel"] { 
+        input[type="text"], input[type="tel"], textarea { 
             width: 100%; 
             padding: 8px 4px; 
             border: none;
@@ -81,15 +76,19 @@
             outline: none;
             transition: border-bottom 0.2s;
             background: transparent;
+            font-family: inherit;
         }
-        input[type="text"]:focus, input[type="tel"]:focus {
+        input[type="text"]:focus, input[type="tel"]:focus, textarea:focus {
             border-bottom: 2px solid #673ab7;
+        }
+        textarea {
+            resize: vertical;
+            min-height: 60px;
         }
         input[type="file"] {
             font-size: 14px;
             color: #5f6368;
         }
-        /* Botón de envío */
         .btn-container {
             display: flex;
             justify-content: flex-start;
@@ -121,15 +120,14 @@
 <body>
 
 <div class="main-wrapper">
-    <!-- BANNER CON TU LOGO OFICIAL -->
     <div class="header-banner">
-        <img src="https://i.ibb.co/wbJf6FK/Captura-de-pantalla-2026-11-17-173945.png" alt="Logotipo Empresa" id="logoEmpresa">
+        <!-- Recuerda poner aquí tu enlace directo de ImgBB (el que empieza con https://i.ibb.co/...) -->
+        <img src="https://i.ibb.co/5zYPcg5/tu-imagen.png" alt="Logotipo Empresa" id="logoEmpresa">
     </div>
 
-    <!-- TARJETA DE TÍTULO -->
     <div class="title-card">
         <h1>Alta de Negocio</h1>
-        <p>Complete los datos del cliente y adjunte las evidencias fotográficas requeridas.</p>
+        <p>Complete los datos del cliente, adjunte evidencias y detalle el pedido.</p>
     </div>
 
     <form id="formNegocio" onsubmit="event.preventDefault(); enviarRegistro();">
@@ -156,6 +154,11 @@
             <input type="file" id="fotoFachada" accept="image/*" capture="environment" required>
         </div>
 
+        <div class="form-card">
+            <label>Pedido</label>
+            <textarea id="pedido" placeholder="Ej. 12 cajas de peñafiel, 15 cajas de xcxc..."></textarea>
+        </div>
+
         <input type="hidden" id="lat">
         <input type="hidden" id="lng">
 
@@ -168,7 +171,7 @@
 
 <script>
     const IMGBB_API_KEY = "f668f5709ccca080d9866e501191aab3"; 
-    const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwtRvxNqy0iz_T0LJBQr2lo0ePNWQ8Ke-ITSzrFByvwJOuONbx7tmCDYVqJklVZ7pvq_A/exec";
+    const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyFRXDWXV1rJOMlxhAFOTMs0gvXadGeAaqIeMm9_zBbpyprwriT7O-FcB6C9WCxEtBySA/exec";
 
     function log(text) {
         const box = document.getElementById('debugLog');
@@ -233,7 +236,8 @@
                 lat: document.getElementById('lat').value || "S/N",
                 lng: document.getElementById('lng').value || "S/N",
                 urlIne: urlIne,
-                urlFachada: urlFachada
+                urlFachada: urlFachada,
+                pedido: document.getElementById('pedido').value
             });
 
             const img = new Image();
