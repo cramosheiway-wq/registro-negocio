@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Alta de Negocio - Campo</title>
+    <style>
+        body { font-family: Arial, sans-serif; background: #f4f6f9; margin: 0; padding: 15px; color: #333; }
+        .container { max-width: 500px; background: #fff; margin: auto; padding: 20px; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        h2 { text-align: center; color: #2c3e50; }
+        .form-group { margin-bottom: 15px; }
+        label { display: block; font-weight: bold; margin-bottom: 5px; font-size: 14px; }
+        input, select, textarea { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 6px; font-size: 16px; box-sizing: border-box; }
+        button { width: 100%; background: #27ae60; color: white; border: none; padding: 12px; font-size: 18px; border-radius: 6px; cursor: pointer; font-weight: bold; margin-top: 10px; }
+        #debugLog { margin-top: 15px; padding: 10px; background: #222; color: #00ff00; font-family: monospace; font-size: 12px; border-radius: 5px; max-height: 150px; overflow-y: auto; display: none; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Registro de Negocio</h2>
+    <form id="formNegocio" onsubmit="event.preventDefault(); enviarRegistro();">
+        
+        <div class="form-group"><label>Ruta Preventa:</label><input type="text" id="rutaPreventa" required></div>
+        <div class="form-group"><label>Frecuencia:</label><input type="text" id="frecuencia" required></div>
+        <div class="form-group"><label>Ruta de Reparto:</label><input type="text" id="rutaReparto" required></div>
+        <div class="form-group"><label>Nombre del Cliente (Negocio):</label><input type="text" id="nombreNegocio" required></div>
+        <div class="form-group"><label>Calle:</label><input type="text" id="calle" required></div>
+        <div class="form-group"><label>Colonia:</label><input type="text" id="colonia" required></div>
+        <div class="form-group"><label>Número:</label><input type="text" id="numero" required></div>
+        <div class="form-group"><label>Ciudad:</label><input type="text" id="ciudad" value="Gómez Palacio" required></div>
+        <div class="form-group"><label>Estado:</label><input type="text" id="estado" value="Durango" required></div>
+        <div class="form-group"><label>Responsable:</label><input type="text" id="responsable" placeholder="Nombre del responsable" required></div>
+        <div class="form-group"><label>Teléfono:</label><input type="tel" id="telefono"></div>
+
+        <div class="form-group">
+            <label>Foto INE Dueño:</label>
+            <input type="file" id="fotoIne" accept="image/*" capture="environment" required>
+        </div>
+
+        <div class="form-group">
+            <label>Foto Frente (Fachada):</label>
+            <input type="file" id="fotoFachada" accept="image/*" capture="environment" required>
+        </div>
+
+        <input type="hidden" id="lat">
+        <input type="hidden" id="lng">
+
+        <button type="submit" id="btnEnviar">Guardar Registro</button>
+        <div id="debugLog">Iniciando...</div>
+    </form>
+</div>
+
+<script>
+    const IMGBB_API_KEY = "f668f5709ccca080d9866e501191aab3"; 
+    const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzT8VFNAfrc8tJYfmRvqzf4qTfCtjR6PreTCRJUCno3zaeoj3KSXB8U0TtSPuAvP6Nm9Q/exec";
+
+    function log(text) {
+        const box = document.getElementById('debugLog');
+        box.style.display = 'block';
+        box.innerHTML += "<br>" + text;
+        console.log(text);
+    }
+
+    window.onload = function() {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(pos => {
+                document.getElementById('lat').value = pos.coords.latitude;
+                document.getElementById('lng').value = pos.coords.longitude;
+                log("GPS obtenido.");
+            }, err => log("GPS error: " + err.message), { enableHighAccuracy: true });
+        }
+    };
+
+    async function subirAImgBB(fileInputId) {
+        const fileInput = document.getElementById(fileInputId);
+        if (!fileInput.files || fileInput.files.length === 0) return "";
+
+        log(`Subiendo ${fileInputId} a ImgBB...`);
+        const file = fileInput.files[0];
+        const formData = new FormData();
+        formData.append("image", file);
+
+        try {
+            const response = async () => await fetch(`https://api.imgbb.com/1/upload?key=${IMGBB_API_KEY}`, {
+                method: "POST",
+                body: formData
+            });
+            const res = await fetch(`https://api.imgbb.com/1/upload?key=${IMGBB_API_KEY}`, { method: "POST", body: formData });
+            const result = await res.json();
+            if (result.success) {
+                log(`¡${fileInputId} subida con éxito!`);
+                return result.data.url;
+            } else {
+                throw new Error(result.error.message || "Error al subir imagen");
+            }
+        } catch (err) {
+            log(`Error en ${fileInputId}: ` + err.message);
+            throw err;
+        }
+    }
+
+    async function enviarRegistro() {
+        const btn = document.getElementById('btnEnviar');
+        btn.disabled = true;
+        document.getElementById('debugLog').innerHTML = "Iniciando...";
+
+        try {
+            const urlIne = await subirAImgBB('fotoIne');
+            const urlFachada = await subirAImgBB('fotoFachada');
+
+            log("Empaquetando datos y enviando a Google Sheets...");
+
+            const params = new URLSearchParams({
+                rutaPreventa: document.getElementById('rutaPreventa').value,
+                frecuencia: document.getElementById('frecuencia').value,
+                rutaReparto: document.getElementById('rutaReparto').value,
+                nombreNegocio: document.getElementById('nombreNegocio').value,
+                calle: document.getElementById('calle').value,
+                colonia: document.getElementById('colonia').value,
+                numero: document.getElementById('numero').value,
+                ciudad: document.getElementById('ciudad').value,
+                estado: document.getElementById('estado').value,
+                responsable: document.getElementById('responsable').value,
+                telefono: document.getElementById('telefono').value,
+                lat: document.getElementById('lat').value || "S/N",
+                lng: document.getElementById('lng').value || "S/N",
+                urlIne: urlIne,
+                urlFachada: urlFachada
+            });
+
+            const img = new Image();
+            img.src = APPS_SCRIPT_URL + "?" + params.toString();
+
+            log("¡Registro enviado correctamente!");
+            
+            setTimeout(() => {
+                alert("¡Registro guardado con éxito!");
+                document.getElementById('formNegocio').reset();
+                btn.disabled = false;
+            }, 2000);
+
+        } catch (error) {
+            log("Error general: " + error.message);
+            alert("Error: " + error.message);
+            btn.disabled = false;
+        }
+    }
+</script>
+
+</body>
+</html>
