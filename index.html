@@ -121,8 +121,8 @@
 
 <div class="main-wrapper">
     <div class="header-banner">
-        <!-- Recuerda poner aquí tu enlace directo de ImgBB (el que empieza con https://i.ibb.co/...) -->
-        <img src="https://i.ibb.co/5zYPcg5/tu-imagen.png" alt="Logotipo Empresa" id="logoEmpresa">
+        <!-- REEMPLAZA ESTA URL POR TU ENLACE DIRECTO REAL DE IMGBB (terminado en .png o .jpg) -->
+        <img src="PEGA_AQUI_TU_ENLACE_DIRECTO_DE_IMGBB" alt="Logotipo Empresa" id="logoEmpresa">
     </div>
 
     <div class="title-card">
@@ -179,14 +179,32 @@
         box.innerHTML += "<br>" + text;
     }
 
-    window.onload = function() {
+    function obtenerUbicacion() {
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(pos => {
                 document.getElementById('lat').value = pos.coords.latitude;
                 document.getElementById('lng').value = pos.coords.longitude;
             }, err => console.log("GPS error: " + err.message), { enableHighAccuracy: true });
         }
-    };
+    }
+
+    window.onload = obtenerUbicacion;
+
+    function formatearCoordenada(valor) {
+        if (!valor || valor === "S/N") return "S/N";
+        let str = String(valor).trim();
+        if (!str.includes(".") && !str.includes(",") && str.length > 5) {
+            let esNegativo = str.startsWith("-");
+            let purosDigitos = str.replace("-", "");
+            if (purosDigitos.length >= 9) {
+                let splitIndex = purosDigitos.length === 9 ? 2 : 3;
+                if (purosDigitos.startsWith("10") || purosDigitos.startsWith("11")) splitIndex = 3;
+                let formateado = purosDigitos.slice(0, splitIndex) + "." + purosDigitos.slice(splitIndex);
+                return esNegativo ? "-" + formateado : formateado;
+            }
+        }
+        return str;
+    }
 
     async function subirAImgBB(fileInputId) {
         const fileInput = document.getElementById(fileInputId);
@@ -221,6 +239,9 @@
 
             log("Enviando datos a Google Sheets...");
 
+            const latLimpia = formatearCoordenada(document.getElementById('lat').value);
+            const lngLimpia = formatearCoordenada(document.getElementById('lng').value);
+
             const params = new URLSearchParams({
                 rutaPreventa: document.getElementById('rutaPreventa').value,
                 frecuencia: document.getElementById('frecuencia').value,
@@ -233,8 +254,8 @@
                 estado: document.getElementById('estado').value,
                 responsable: document.getElementById('responsable').value,
                 telefono: document.getElementById('telefono').value,
-                lat: document.getElementById('lat').value || "S/N",
-                lng: document.getElementById('lng').value || "S/N",
+                lat: latLimpia || "S/N",
+                lng: lngLimpia || "S/N",
                 urlIne: urlIne,
                 urlFachada: urlFachada,
                 pedido: document.getElementById('pedido').value
@@ -248,6 +269,7 @@
             setTimeout(() => {
                 alert("¡Registro guardado con éxito!");
                 document.getElementById('formNegocio').reset();
+                obtenerUbicacion(); // Vuelve a capturar el GPS para el siguiente cliente
                 btn.disabled = false;
             }, 2000);
 
