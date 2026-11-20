@@ -122,7 +122,6 @@
 
 <div class="main-wrapper">
     <div class="header-banner">
-        <!-- Asegúrate de usar el enlace directo real de tu logo (ej. https://i.ibb.co/... o logo.png) -->
         <img src="https://i.ibb.co/wbJf6FK/Captura-de-pantalla-2026-11-17-173945.png" alt="Logotipo Empresa" id="logoEmpresa">
     </div>
 
@@ -135,28 +134,7 @@
         
         <div class="form-card">
             <label>Ruta Preventa <span class="required-star">*</span></label>
-            <input type="text" id="rutaPreventa" placeholder="Tu respuesta" required>
-        </div>
-
-        <div class="form-card">
-            <label>Frecuencia <span class="required-star">*</span></label>
-            <select id="frecuencia" required>
-                <option value="" disabled selected>Selecciona una opción</option>
-                <option value="Lunes">Lunes</option>
-                <option value="Lunes - Jueves">Lunes - Jueves</option>
-                <option value="Jueves">Jueves</option>
-                <option value="Martes">Martes</option>
-                <option value="Martes - Viernes">Martes - Viernes</option>
-                <option value="Viernes">Viernes</option>
-                <option value="Miércoles">Miércoles</option>
-                <option value="Miércoles - Sábado">Miércoles - Sábado</option>
-                <option value="Sábado">Sábado</option>
-            </select>
-        </div>
-
-        <div class="form-card">
-            <label>Ruta de Reparto <span class="required-star">*</span></label>
-            <select id="rutaReparto" required>
+            <select id="rutaPreventa" required>
                 <option value="" disabled selected>Selecciona una opción</option>
                 <option value="101">101</option>
                 <option value="102">102</option>
@@ -184,6 +162,27 @@
                 <option value="F203 FIM">F203 FIM</option>
                 <option value="401 Tradicional Eventos">401 Tradicional Eventos</option>
             </select>
+        </div>
+
+        <div class="form-card">
+            <label>Frecuencia <span class="required-star">*</span></label>
+            <select id="frecuencia" required>
+                <option value="" disabled selected>Selecciona una opción</option>
+                <option value="Lunes">Lunes</option>
+                <option value="Lunes - Jueves">Lunes - Jueves</option>
+                <option value="Jueves">Jueves</option>
+                <option value="Martes">Martes</option>
+                <option value="Martes - Viernes">Martes - Viernes</option>
+                <option value="Viernes">Viernes</option>
+                <option value="Miércoles">Miércoles</option>
+                <option value="Miércoles - Sábado">Miércoles - Sábado</option>
+                <option value="Sábado">Sábado</option>
+            </select>
+        </div>
+
+        <div class="form-card">
+            <label>Ruta de Reparto <span class="required-star">*</span></label>
+            <input type="text" id="rutaReparto" placeholder="Tu respuesta" required>
         </div>
 
         <div class="form-card"><label>Nombre del Cliente (Negocio) <span class="required-star">*</span></label><input type="text" id="nombreNegocio" placeholder="Tu respuesta" required></div>
