@@ -50,6 +50,20 @@
             font-size: 14px;
             color: #5f6368;
         }
+        .gps-badge {
+            margin-top: 10px;
+            padding: 6px 10px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 500;
+            background: #fef7e0;
+            color: #b06000;
+            display: inline-block;
+        }
+        .gps-badge.ok {
+            background: #e6f4ea;
+            color: #137333;
+        }
         .form-card {
             background: #fff;
             border-radius: 8px;
@@ -128,6 +142,7 @@
     <div class="title-card">
         <h1>Alta de Negocio</h1>
         <p>Complete los datos del cliente, adjunte evidencias y detalle el pedido.</p>
+        <div id="gpsStatus" class="gps-badge">📡 Buscando ubicación GPS...</div>
     </div>
 
     <form id="formNegocio" onsubmit="event.preventDefault(); enviarRegistro();">
@@ -223,22 +238,13 @@
     const IMGBB_API_KEY = "f668f5709ccca080d9866e501191aab3"; 
     const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycby0t1_IvVtKAYJ2UWHBOMBGpLFqxwRYjOnHOjd1zI7xLhMunq1-Mf_Vj6L_W-Sios4vYw/exec";
 
+    let gpsWatchId = null;
+
     function log(text) {
         const box = document.getElementById('debugLog');
         box.style.display = 'block';
         box.innerHTML += "<br>" + text;
     }
-
-    function obtenerUbicacion() {
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(pos => {
-                document.getElementById('lat').value = pos.coords.latitude;
-                document.getElementById('lng').value = pos.coords.longitude;
-            }, err => console.log("GPS error: " + err.message), { enableHighAccuracy: true });
-        }
-    }
-
-    window.onload = obtenerUbicacion;
 
     function formatearCoordenada(valor, tipo = "lat") {
         if (!valor || valor === "S/N") return "S/N";
@@ -256,6 +262,63 @@
         const limpia = `${digitos.slice(0, enteros)}.${digitos.slice(enteros)}`;
         return esNegativo ? `-${limpia}` : limpia;
     }
+
+    function actualizarCamposGPS(pos) {
+        const lat = pos.coords.latitude;
+        const lng = pos.coords.longitude;
+        document.getElementById('lat').value = lat;
+        document.getElementById('lng').value = lng;
+
+        const badge = document.getElementById('gpsStatus');
+        badge.className = "gps-badge ok";
+        badge.textContent = `📍 GPS listo: ${formatearCoordenada(lat, "lat")}, ${formatearCoordenada(lng, "lng")}`;
+    }
+
+    function iniciarRastreoGPS() {
+        if (!navigator.geolocation) {
+            document.getElementById('gpsStatus').textContent = "⚠️ Navegador sin soporte GPS";
+            return;
+        }
+
+        if (gpsWatchId !== null) {
+            navigator.geolocation.clearWatch(gpsWatchId);
+        }
+
+        // Captura inicial rápida (acepta caché reciente de hasta 30s)
+        navigator.geolocation.getCurrentPosition(
+            actualizarCamposGPS,
+            err => console.log("GPS inicial:", err.message),
+            { enableHighAccuracy: false, timeout: 8000, maximumAge: 30000 }
+        );
+
+        // Actualización continua de alta precisión
+        gpsWatchId = navigator.geolocation.watchPosition(
+            actualizarCamposGPS,
+            err => {
+                console.log("GPS watch:", err.message);
+                if (!document.getElementById('lat').value) {
+                    document.getElementById('gpsStatus').textContent = "⚠️ Activa la ubicación del teléfono";
+                }
+            },
+            { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 }
+        );
+    }
+
+    function obtenerUbicacionForzada() {
+        return new Promise(resolve => {
+            if (!navigator.geolocation) return resolve();
+            navigator.geolocation.getCurrentPosition(
+                pos => {
+                    actualizarCamposGPS(pos);
+                    resolve();
+                },
+                () => resolve(),
+                { enableHighAccuracy: true, timeout: 5000, maximumAge: 30000 }
+            );
+        });
+    }
+
+    window.addEventListener('DOMContentLoaded', iniciarRastreoGPS);
 
     async function subirAImgBB(fileInputId) {
         const fileInput = document.getElementById(fileInputId);
@@ -285,6 +348,12 @@
         document.getElementById('debugLog').innerHTML = "Procesando envío...";
 
         try {
+            // Si aún no hay coordenadas capturadas, intenta obtenerlas antes de subir
+            if (!document.getElementById('lat').value || !document.getElementById('lng').value) {
+                log("Obteniendo coordenadas GPS...");
+                await obtenerUbicacionForzada();
+            }
+
             const urlIne = await subirAImgBB('fotoIne');
             const urlFachada = await subirAImgBB('fotoFachada');
 
@@ -320,7 +389,7 @@
             setTimeout(() => {
                 alert("¡Registro guardado con éxito!");
                 document.getElementById('formNegocio').reset();
-                obtenerUbicacion();
+                iniciarRastreoGPS();
                 btn.disabled = false;
             }, 2000);
 
