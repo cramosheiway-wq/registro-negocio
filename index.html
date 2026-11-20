@@ -66,7 +66,7 @@
         }
         .required-star { color: #d93025; margin-left: 3px; }
         
-        input[type="text"], input[type="tel"], textarea { 
+        input[type="text"], input[type="tel"], select, textarea { 
             width: 100%; 
             padding: 8px 4px; 
             border: none;
@@ -77,8 +77,9 @@
             transition: border-bottom 0.2s;
             background: transparent;
             font-family: inherit;
+            color: #202124;
         }
-        input[type="text"]:focus, input[type="tel"]:focus, textarea:focus {
+        input[type="text"]:focus, input[type="tel"]:focus, select:focus, textarea:focus {
             border-bottom: 2px solid #673ab7;
         }
         textarea {
@@ -121,8 +122,7 @@
 
 <div class="main-wrapper">
     <div class="header-banner">
-        <!-- REEMPLAZA ESTA URL POR TU ENLACE DIRECTO REAL DE IMGBB (terminado en .png o .jpg) -->
-        <img src="PEGA_AQUI_TU_ENLACE_DIRECTO_DE_IMGBB" alt="Logotipo Empresa" id="logoEmpresa">
+        <img src="https://docs.google.com/forms-images-rt/AMfapbm2Vk33BzjZnPW9ZLqGEf_KWUKqJYaDsI60pUvlR6HwDY9zLee4p6g_NHRJt1WJjhitvFvF0iveUzTkybWSSY8nYmQ1to9LSebCPs6NFet8hjlWBoNqn2FJ3o19mhHfR2D9mHWNVz5cm8xZg1GsIPGMT3M00BRPeIsEnrJ-ghZHdlnhktNBuZoUPHjO1eruTUC4ZTv-g88=w1468" alt="Logotipo Empresa" id="logoEmpresa">
     </div>
 
     <div class="title-card">
@@ -132,9 +132,59 @@
 
     <form id="formNegocio" onsubmit="event.preventDefault(); enviarRegistro();">
         
-        <div class="form-card"><label>Ruta Preventa <span class="required-star">*</span></label><input type="text" id="rutaPreventa" placeholder="Tu respuesta" required></div>
-        <div class="form-card"><label>Frecuencia <span class="required-star">*</span></label><input type="text" id="frecuencia" placeholder="Tu respuesta" required></div>
-        <div class="form-card"><label>Ruta de Reparto <span class="required-star">*</span></label><input type="text" id="rutaReparto" placeholder="Tu respuesta" required></div>
+        <div class="form-card">
+            <label>Ruta Preventa <span class="required-star">*</span></label>
+            <input type="text" id="rutaPreventa" placeholder="Tu respuesta" required>
+        </div>
+
+        <div class="form-card">
+            <label>Frecuencia <span class="required-star">*</span></label>
+            <select id="frecuencia" required>
+                <option value="" disabled selected>Selecciona una opción</option>
+                <option value="Lunes">Lunes</option>
+                <option value="Lunes - Jueves">Lunes - Jueves</option>
+                <option value="Jueves">Jueves</option>
+                <option value="Martes">Martes</option>
+                <option value="Martes - Viernes">Martes - Viernes</option>
+                <option value="Viernes">Viernes</option>
+                <option value="Miércoles">Miércoles</option>
+                <option value="Miércoles - Sábado">Miércoles - Sábado</option>
+                <option value="Sábado">Sábado</option>
+            </select>
+        </div>
+
+        <div class="form-card">
+            <label>Ruta de Reparto <span class="required-star">*</span></label>
+            <select id="rutaReparto" required>
+                <option value="" disabled selected>Selecciona una opción</option>
+                <option value="101">101</option>
+                <option value="102">102</option>
+                <option value="103">103</option>
+                <option value="104">104</option>
+                <option value="105">105</option>
+                <option value="106">106</option>
+                <option value="107">107</option>
+                <option value="108">108</option>
+                <option value="109">109</option>
+                <option value="110">110</option>
+                <option value="111">111</option>
+                <option value="112">112</option>
+                <option value="113">113</option>
+                <option value="117">117</option>
+                <option value="119">119</option>
+                <option value="120">120</option>
+                <option value="202">202</option>
+                <option value="203">203</option>
+                <option value="204">204</option>
+                <option value="205">205</option>
+                <option value="P01 Tradicional Parras">P01 Tradicional Parras</option>
+                <option value="P02 Parras">P02 Parras</option>
+                <option value="F201 FIM">F201 FIM</option>
+                <option value="F203 FIM">F203 FIM</option>
+                <option value="401 Tradicional Eventos">401 Tradicional Eventos</option>
+            </select>
+        </div>
+
         <div class="form-card"><label>Nombre del Cliente (Negocio) <span class="required-star">*</span></label><input type="text" id="nombreNegocio" placeholder="Tu respuesta" required></div>
         <div class="form-card"><label>Calle <span class="required-star">*</span></label><input type="text" id="calle" placeholder="Tu respuesta" required></div>
         <div class="form-card"><label>Colonia <span class="required-star">*</span></label><input type="text" id="colonia" placeholder="Tu respuesta" required></div>
@@ -269,7 +319,7 @@
             setTimeout(() => {
                 alert("¡Registro guardado con éxito!");
                 document.getElementById('formNegocio').reset();
-                obtenerUbicacion(); // Vuelve a capturar el GPS para el siguiente cliente
+                obtenerUbicacion();
                 btn.disabled = false;
             }, 2000);
 
