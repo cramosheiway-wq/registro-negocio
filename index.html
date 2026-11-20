@@ -236,7 +236,7 @@
 
 <script>
     const IMGBB_API_KEY = "f668f5709ccca080d9866e501191aab3"; 
-    const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycby0t1_IvVtKAYJ2UWHBOMBGpLFqxwRYjOnHOjd1zI7xLhMunq1-Mf_Vj6L_W-Sios4vYw/exec";
+    const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxMUJQjC1sIxcW1a9s5LfyWe6MGeBKIdqOTcC9bEag7W9qxvUP1Nu6YUVEEX1Y3kae9eA/exec";
 
     let gpsWatchId = null;
 
@@ -378,15 +378,13 @@
                 pedido: document.getElementById('pedido').value
             });
 
-            const urlFinal = APPS_SCRIPT_URL + "?" + params.toString();
-
-            await fetch(urlFinal, {
-                method: "GET",
-                mode: "no-cors"
+            await fetch(APPS_SCRIPT_URL, {
+                method: "POST",
+                mode: "no-cors",
+                body: params
             });
 
-            log("¡Registro enviado a Google Sheets!");
-            alert("¡Registro guardado con éxito!");
+            log("✅ ¡Registro guardado con éxito en Google Sheets!");
             document.getElementById('formNegocio').reset();
             obtenerUbicacion();
             btn.disabled = false;
