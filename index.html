@@ -1,634 +1,403 @@
 <!DOCTYPE html>
-
 <html lang="es">
-
 <head>
-
-<meta charset="UTF-8">
-
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-
-<title>Alta de Negocio - Campo</title>
-
-<style>
-
-body {
-
-font-family: 'Roboto', Arial, sans-serif;
-
-background-color: #f0ebf8;
-
-margin: 0;
-
-padding: 15px;
-
-color: #202124;
-
-}
-
-.main-wrapper {
-
-max-width: 600px;
-
-margin: auto;
-
-}
-
-.header-banner {
-
-background: #fff;
-
-border-radius: 8px;
-
-overflow: hidden;
-
-margin-bottom: 12px;
-
-box-shadow: 0 1px 3px rgba(0,0,0,0.12);
-
-text-align: center;
-
-padding: 15px;
-
-}
-
-.header-banner img {
-
-max-width: 220px;
-
-width: 100%;
-
-height: auto;
-
-display: inline-block;
-
-}
-
-.title-card {
-
-background: #fff;
-
-border-radius: 8px;
-
-border-top: 10px solid #673ab7;
-
-padding: 22px 24px;
-
-margin-bottom: 12px;
-
-box-shadow: 0 1px 3px rgba(0,0,0,0.12);
-
-}
-
-.title-card h1 {
-
-margin: 0 0 8px 0;
-
-font-size: 26px;
-
-font-weight: 400;
-
-color: #202124;
-
-}
-
-.title-card p {
-
-margin: 0;
-
-font-size: 14px;
-
-color: #5f6368;
-
-}
-
-.form-card {
-
-background: #fff;
-
-border-radius: 8px;
-
-padding: 20px 24px;
-
-margin-bottom: 12px;
-
-box-shadow: 0 1px 3px rgba(0,0,0,0.12);
-
-}
-
-label {
-
-display: block;
-
-font-size: 15px;
-
-font-weight: 500;
-
-margin-bottom: 12px;
-
-color: #202124;
-
-}
-
-.required-star { color: #d93025; margin-left: 3px; }
-
-input[type="text"], input[type="tel"], select, textarea {
-
-width: 100%;
-
-padding: 8px 4px;
-
-border: none;
-
-border-bottom: 1px solid #dadce0;
-
-font-size: 15px;
-
-box-sizing: border-box;
-
-outline: none;
-
-transition: border-bottom 0.2s;
-
-background: transparent;
-
-font-family: inherit;
-
-color: #202124;
-
-}
-
-input[type="text"]:focus, input[type="tel"]:focus, select:focus, textarea:focus {
-
-border-bottom: 2px solid #673ab7;
-
-}
-
-textarea {
-
-resize: vertical;
-
-min-height: 60px;
-
-}
-
-input[type="file"] {
-
-font-size: 14px;
-
-color: #5f6368;
-
-}
-
-.btn-container {
-
-display: flex;
-
-justify-content: flex-start;
-
-align-items: center;
-
-margin-top: 15px;
-
-}
-
-button {
-
-background: #673ab7;
-
-color: white;
-
-border: none;
-
-padding: 10px 24px;
-
-font-size: 15px;
-
-border-radius: 4px;
-
-cursor: pointer;
-
-font-weight: 500;
-
-box-shadow: 0 1px 2px rgba(0,0,0,0.2);
-
-transition: background 0.2s;
-
-}
-
-button:hover { background: #5e35b1; }
-
-button:disabled { background: #9e9e9e; cursor: not-allowed; }
-
-#debugLog {
-
-margin-top: 15px; padding: 10px; background: #222; color: #00ff00;
-
-font-family: monospace; font-size: 12px; border-radius: 5px;
-
-max-height: 150px; overflow-y: auto; display: none;
-
-}
-
-</style>
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Alta de Negocio - Campo</title>
+    <style>
+        body { 
+            font-family: 'Roboto', Arial, sans-serif; 
+            background-color: #f0ebf8; 
+            margin: 0; 
+            padding: 15px; 
+            color: #202124; 
+        }
+        .main-wrapper { 
+            max-width: 600px; 
+            margin: auto; 
+        }
+        .header-banner {
+            background: #fff;
+            border-radius: 8px;
+            overflow: hidden;
+            margin-bottom: 12px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.12);
+            text-align: center;
+            padding: 15px;
+        }
+        .header-banner img {
+            max-width: 220px;
+            width: 100%;
+            height: auto;
+            display: inline-block;
+        }
+        .title-card {
+            background: #fff;
+            border-radius: 8px;
+            border-top: 10px solid #673ab7;
+            padding: 22px 24px;
+            margin-bottom: 12px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.12);
+        }
+        .title-card h1 {
+            margin: 0 0 8px 0;
+            font-size: 26px;
+            font-weight: 400;
+            color: #202124;
+        }
+        .title-card p {
+            margin: 0;
+            font-size: 14px;
+            color: #5f6368;
+        }
+        .gps-badge {
+            margin-top: 10px;
+            padding: 6px 10px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 500;
+            background: #fef7e0;
+            color: #b06000;
+            display: inline-block;
+        }
+        .gps-badge.ok {
+            background: #e6f4ea;
+            color: #137333;
+        }
+        .form-card {
+            background: #fff;
+            border-radius: 8px;
+            padding: 20px 24px;
+            margin-bottom: 12px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.12);
+        }
+        label { 
+            display: block; 
+            font-size: 15px; 
+            font-weight: 500;
+            margin-bottom: 12px; 
+            color: #202124;
+        }
+        .required-star { color: #d93025; margin-left: 3px; }
+        
+        input[type="text"], input[type="tel"], select, textarea { 
+            width: 100%; 
+            padding: 8px 4px; 
+            border: none;
+            border-bottom: 1px solid #dadce0; 
+            font-size: 15px; 
+            box-sizing: border-box;
+            outline: none;
+            transition: border-bottom 0.2s;
+            background: transparent;
+            font-family: inherit;
+            color: #202124;
+        }
+        input[type="text"]:focus, input[type="tel"]:focus, select:focus, textarea:focus {
+            border-bottom: 2px solid #673ab7;
+        }
+        textarea {
+            resize: vertical;
+            min-height: 60px;
+        }
+        input[type="file"] {
+            font-size: 14px;
+            color: #5f6368;
+        }
+        .btn-container {
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            margin-top: 15px;
+        }
+        button { 
+            background: #673ab7; 
+            color: white; 
+            border: none; 
+            padding: 10px 24px; 
+            font-size: 15px; 
+            border-radius: 4px; 
+            cursor: pointer; 
+            font-weight: 500;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.2);
+            transition: background 0.2s;
+        }
+        button:hover { background: #5e35b1; }
+        button:disabled { background: #9e9e9e; cursor: not-allowed; }
+        
+        #debugLog { 
+            margin-top: 15px; padding: 10px; background: #222; color: #00ff00; 
+            font-family: monospace; font-size: 12px; border-radius: 5px; 
+            max-height: 150px; overflow-y: auto; display: none; 
+        }
+    </style>
 </head>
-
 <body>
 
-
 <div class="main-wrapper">
+    <div class="header-banner">
+        <img src="https://i.ibb.co/wbJf6FK/Captura-de-pantalla-2026-11-17-173945.png" alt="Logotipo Empresa" id="logoEmpresa">
+    </div>
 
-<div class="header-banner">
+    <div class="title-card">
+        <h1>Alta de Negocio</h1>
+        <p>Complete los datos del cliente, adjunte evidencias y detalle el pedido.</p>
+        <div id="gpsStatus" class="gps-badge">📡 Buscando ubicación GPS...</div>
+    </div>
 
-<!-- Asegúrate de usar el enlace directo real de tu logo (ej. https://i.ibb.co/... o logo.png) -->
+    <form id="formNegocio" onsubmit="event.preventDefault(); enviarRegistro();">
+        
+        <div class="form-card">
+            <label>Ruta Preventa <span class="required-star">*</span></label>
+            <select id="rutaPreventa" required>
+                <option value="" disabled selected>Selecciona una opción</option>
+                <option value="101">101</option>
+                <option value="102">102</option>
+                <option value="103">103</option>
+                <option value="104">104</option>
+                <option value="105">105</option>
+                <option value="106">106</option>
+                <option value="107">107</option>
+                <option value="108">108</option>
+                <option value="109">109</option>
+                <option value="110">110</option>
+                <option value="111">111</option>
+                <option value="112">112</option>
+                <option value="113">113</option>
+                <option value="117">117</option>
+                <option value="119">119</option>
+                <option value="120">120</option>
+                <option value="202">202</option>
+                <option value="203">203</option>
+                <option value="204">204</option>
+                <option value="205">205</option>
+                <option value="P01 Tradicional Parras">P01 Tradicional Parras</option>
+                <option value="P02 Parras">P02 Parras</option>
+                <option value="F201 FIM">F201 FIM</option>
+                <option value="F203 FIM">F203 FIM</option>
+                <option value="401 Tradicional Eventos">401 Tradicional Eventos</option>
+            </select>
+        </div>
 
-<img src="https://i.ibb.co/wbJf6FK/Captura-de-pantalla-2026-11-17-173945.png" alt="Logotipo Empresa" id="logoEmpresa">
+        <div class="form-card">
+            <label>Frecuencia <span class="required-star">*</span></label>
+            <select id="frecuencia" required>
+                <option value="" disabled selected>Selecciona una opción</option>
+                <option value="Lunes">Lunes</option>
+                <option value="Lunes - Jueves">Lunes - Jueves</option>
+                <option value="Jueves">Jueves</option>
+                <option value="Martes">Martes</option>
+                <option value="Martes - Viernes">Martes - Viernes</option>
+                <option value="Viernes">Viernes</option>
+                <option value="Miércoles">Miércoles</option>
+                <option value="Miércoles - Sábado">Miércoles - Sábado</option>
+                <option value="Sábado">Sábado</option>
+            </select>
+        </div>
 
+        <div class="form-card">
+            <label>Ruta de Reparto <span class="required-star">*</span></label>
+            <input type="text" id="rutaReparto" placeholder="Tu respuesta" required>
+        </div>
+
+        <div class="form-card"><label>Nombre del Cliente (Negocio) <span class="required-star">*</span></label><input type="text" id="nombreNegocio" placeholder="Tu respuesta" required></div>
+        <div class="form-card"><label>Calle <span class="required-star">*</span></label><input type="text" id="calle" placeholder="Tu respuesta" required></div>
+        <div class="form-card"><label>Colonia <span class="required-star">*</span></label><input type="text" id="colonia" placeholder="Tu respuesta" required></div>
+        <div class="form-card"><label>Número <span class="required-star">*</span></label><input type="text" id="numero" placeholder="Tu respuesta" required></div>
+        <div class="form-card"><label>Ciudad <span class="required-star">*</span></label><input type="text" id="ciudad" value="Gómez Palacio" required></div>
+        <div class="form-card"><label>Estado <span class="required-star">*</span></label><input type="text" id="estado" value="Durango" required></div>
+        <div class="form-card"><label>Responsable <span class="required-star">*</span></label><input type="text" id="responsable" placeholder="Nombre del responsable" required></div>
+        <div class="form-card"><label>Teléfono</label><input type="tel" id="telefono" placeholder="Tu respuesta"></div>
+
+        <div class="form-card">
+            <label>Foto INE Dueño <span class="required-star">*</span></label>
+            <input type="file" id="fotoIne" accept="image/*" capture="environment" required>
+        </div>
+
+        <div class="form-card">
+            <label>Foto Frente (Fachada) <span class="required-star">*</span></label>
+            <input type="file" id="fotoFachada" accept="image/*" capture="environment" required>
+        </div>
+
+        <div class="form-card">
+            <label>Pedido</label>
+            <textarea id="pedido" placeholder="Ej. 12 cajas de peñafiel, 15 cajas de xcxc..."></textarea>
+        </div>
+
+        <input type="hidden" id="lat">
+        <input type="hidden" id="lng">
+
+        <div class="btn-container">
+            <button type="submit" id="btnEnviar">Enviar</button>
+        </div>
+        <div id="debugLog">Iniciando...</div>
+    </form>
 </div>
-
-
-<div class="title-card">
-
-<h1>Alta de Negocio</h1>
-
-<p>Complete los datos del cliente, adjunte evidencias y detalle el pedido.</p>
-
-</div>
-
-
-<form id="formNegocio" onsubmit="event.preventDefault(); enviarRegistro();">
-
-<div class="form-card">
-
-<label>Ruta Preventa <span class="required-star">*</span></label>
-
-<input type="text" id="rutaPreventa" placeholder="Tu respuesta" required>
-
-</div>
-
-
-<div class="form-card">
-
-<label>Frecuencia <span class="required-star">*</span></label>
-
-<select id="frecuencia" required>
-
-<option value="" disabled selected>Selecciona una opción</option>
-
-<option value="Lunes">Lunes</option>
-
-<option value="Lunes - Jueves">Lunes - Jueves</option>
-
-<option value="Jueves">Jueves</option>
-
-<option value="Martes">Martes</option>
-
-<option value="Martes - Viernes">Martes - Viernes</option>
-
-<option value="Viernes">Viernes</option>
-
-<option value="Miércoles">Miércoles</option>
-
-<option value="Miércoles - Sábado">Miércoles - Sábado</option>
-
-<option value="Sábado">Sábado</option>
-
-</select>
-
-</div>
-
-
-<div class="form-card">
-
-<label>Ruta de Reparto <span class="required-star">*</span></label>
-
-<select id="rutaReparto" required>
-
-<option value="" disabled selected>Selecciona una opción</option>
-
-<option value="101">101</option>
-
-<option value="102">102</option>
-
-<option value="103">103</option>
-
-<option value="104">104</option>
-
-<option value="105">105</option>
-
-<option value="106">106</option>
-
-<option value="107">107</option>
-
-<option value="108">108</option>
-
-<option value="109">109</option>
-
-<option value="110">110</option>
-
-<option value="111">111</option>
-
-<option value="112">112</option>
-
-<option value="113">113</option>
-
-<option value="117">117</option>
-
-<option value="119">119</option>
-
-<option value="120">120</option>
-
-<option value="202">202</option>
-
-<option value="203">203</option>
-
-<option value="204">204</option>
-
-<option value="205">205</option>
-
-<option value="P01 Tradicional Parras">P01 Tradicional Parras</option>
-
-<option value="P02 Parras">P02 Parras</option>
-
-<option value="F201 FIM">F201 FIM</option>
-
-<option value="F203 FIM">F203 FIM</option>
-
-<option value="401 Tradicional Eventos">401 Tradicional Eventos</option>
-
-</select>
-
-</div>
-
-
-<div class="form-card"><label>Nombre del Cliente (Negocio) <span class="required-star">*</span></label><input type="text" id="nombreNegocio" placeholder="Tu respuesta" required></div>
-
-<div class="form-card"><label>Calle <span class="required-star">*</span></label><input type="text" id="calle" placeholder="Tu respuesta" required></div>
-
-<div class="form-card"><label>Colonia <span class="required-star">*</span></label><input type="text" id="colonia" placeholder="Tu respuesta" required></div>
-
-<div class="form-card"><label>Número <span class="required-star">*</span></label><input type="text" id="numero" placeholder="Tu respuesta" required></div>
-
-<div class="form-card"><label>Ciudad <span class="required-star">*</span></label><input type="text" id="ciudad" value="Gómez Palacio" required></div>
-
-<div class="form-card"><label>Estado <span class="required-star">*</span></label><input type="text" id="estado" value="Durango" required></div>
-
-<div class="form-card"><label>Responsable <span class="required-star">*</span></label><input type="text" id="responsable" placeholder="Nombre del responsable" required></div>
-
-<div class="form-card"><label>Teléfono</label><input type="tel" id="telefono" placeholder="Tu respuesta"></div>
-
-
-<div class="form-card">
-
-<label>Foto INE Dueño <span class="required-star">*</span></label>
-
-<input type="file" id="fotoIne" accept="image/*" capture="environment" required>
-
-</div>
-
-
-<div class="form-card">
-
-<label>Foto Frente (Fachada) <span class="required-star">*</span></label>
-
-<input type="file" id="fotoFachada" accept="image/*" capture="environment" required>
-
-</div>
-
-
-<div class="form-card">
-
-<label>Pedido</label>
-
-<textarea id="pedido" placeholder="Ej. 12 cajas de peñafiel, 15 cajas de xcxc..."></textarea>
-
-</div>
-
-
-<input type="hidden" id="lat">
-
-<input type="hidden" id="lng">
-
-
-<div class="btn-container">
-
-<button type="submit" id="btnEnviar">Enviar</button>
-
-</div>
-
-<div id="debugLog">Iniciando...</div>
-
-</form>
-
-</div>
-
 
 <script>
-
-const IMGBB_API_KEY = "f668f5709ccca080d9866e501191aab3";
-
-const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycby0t1_IvVtKAYJ2UWHBOMBGpLFqxwRYjOnHOjd1zI7xLhMunq1-Mf_Vj6L_W-Sios4vYw/exec";
-
-
-function log(text) {
-
-const box = document.getElementById('debugLog');
-
-box.style.display = 'block';
-
-box.innerHTML += "<br>" + text;
-
-}
-
-
-function obtenerUbicacion() {
-
-if (navigator.geolocation) {
-
-navigator.geolocation.getCurrentPosition(pos => {
-
-document.getElementById('lat').value = pos.coords.latitude;
-
-document.getElementById('lng').value = pos.coords.longitude;
-
-}, err => console.log("GPS error: " + err.message), { enableHighAccuracy: true });
-
-}
-
-}
-
-
-window.onload = obtenerUbicacion;
-
-
-function formatearCoordenada(valor, tipo = "lat") {
-
-if (!valor || valor === "S/N") return "S/N";
-
-const str = String(valor).trim();
-
-const esNegativo = str.startsWith("-") || tipo === "lng";
-
-const digitos = str.replace(/[^0-9]/g, "");
-
-
-if (!digitos || digitos.length < 4) return str;
-
-
-const enteros = tipo === "lng" ? 3 : 2;
-
-if (digitos.length <= enteros) {
-
-return (esNegativo ? "-" : "") + digitos;
-
-}
-
-
-const limpia = `${digitos.slice(0, enteros)}.${digitos.slice(enteros)}`;
-
-return esNegativo ? `-${limpia}` : limpia;
-
-}
-
-
-async function subirAImgBB(fileInputId) {
-
-const fileInput = document.getElementById(fileInputId);
-
-if (!fileInput.files || fileInput.files.length === 0) return "";
-
-
-log(`Subiendo ${fileInputId} a ImgBB...`);
-
-const file = fileInput.files[0];
-
-const formData = new FormData();
-
-formData.append("image", file);
-
-
-const res = await fetch(`https://api.imgbb.com/1/upload?key=${IMGBB_API_KEY}`, {
-
-method: "POST",
-
-body: formData
-
-});
-
-const result = await res.json();
-
-if (result.success) {
-
-log(`¡${fileInputId} subida con éxito!`);
-
-return result.data.url;
-
-} else {
-
-throw new Error(result.error.message || "Error al subir imagen");
-
-}
-
-}
-
-
-async function enviarRegistro() {
-
-const btn = document.getElementById('btnEnviar');
-
-btn.disabled = true;
-
-document.getElementById('debugLog').innerHTML = "Procesando envío...";
-
-
-try {
-
-const urlIne = await subirAImgBB('fotoIne');
-
-const urlFachada = await subirAImgBB('fotoFachada');
-
-
-log("Enviando datos a Google Sheets...");
-
-
-const latLimpia = formatearCoordenada(document.getElementById('lat').value, "lat");
-
-const lngLimpia = formatearCoordenada(document.getElementById('lng').value, "lng");
-
-
-const params = new URLSearchParams({
-
-rutaPreventa: document.getElementById('rutaPreventa').value,
-
-frecuencia: document.getElementById('frecuencia').value,
-
-rutaReparto: document.getElementById('rutaReparto').value,
-
-nombreNegocio: document.getElementById('nombreNegocio').value,
-
-calle: document.getElementById('calle').value,
-
-colonia: document.getElementById('colonia').value,
-
-numero: document.getElementById('numero').value,
-
-ciudad: document.getElementById('ciudad').value,
-
-estado: document.getElementById('estado').value,
-
-responsable: document.getElementById('responsable').value,
-
-telefono: document.getElementById('telefono').value,
-
-lat: latLimpia || "S/N",
-
-lng: lngLimpia || "S/N",
-
-urlIne: urlIne,
-
-urlFachada: urlFachada,
-
-pedido: document.getElementById('pedido').value
-
-});
-
-
-const img = new Image();
-
-img.src = APPS_SCRIPT_URL + "?" + params.toString();
-
-
-log("¡Registro enviado correctamente!");
-
-setTimeout(() => {
-
-alert("¡Registro guardado con éxito!");
-
-document.getElementById('formNegocio').reset();
-
-obtenerUbicacion();
-
-btn.disabled = false;
-
-}, 2000);
-
-
-} catch (error) {
-
-log("Error: " + error.message);
-
-alert("Error: " + error.message);
-
-btn.disabled = false;
-
-}
-
-}
-
+    const IMGBB_API_KEY = "f668f5709ccca080d9866e501191aab3"; 
+    const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycby0t1_IvVtKAYJ2UWHBOMBGpLFqxwRYjOnHOjd1zI7xLhMunq1-Mf_Vj6L_W-Sios4vYw/exec";
+
+    let gpsWatchId = null;
+
+    function log(text) {
+        const box = document.getElementById('debugLog');
+        box.style.display = 'block';
+        box.innerHTML += "<br>" + text;
+    }
+
+    function formatearCoordenada(valor, tipo = "lat") {
+        if (!valor || valor === "S/N") return "S/N";
+        const str = String(valor).trim();
+        const esNegativo = str.startsWith("-") || tipo === "lng";
+        const digitos = str.replace(/[^0-9]/g, "");
+
+        if (!digitos || digitos.length < 4) return str;
+
+        const enteros = tipo === "lng" ? 3 : 2;
+        if (digitos.length <= enteros) {
+            return (esNegativo ? "-" : "") + digitos;
+        }
+
+        const limpia = `${digitos.slice(0, enteros)}.${digitos.slice(enteros)}`;
+        return esNegativo ? `-${limpia}` : limpia;
+    }
+
+    function actualizarCamposGPS(pos) {
+        const lat = pos.coords.latitude;
+        const lng = pos.coords.longitude;
+        document.getElementById('lat').value = lat;
+        document.getElementById('lng').value = lng;
+
+        const badge = document.getElementById('gpsStatus');
+        badge.className = "gps-badge ok";
+        badge.textContent = `📍 GPS listo: ${formatearCoordenada(lat, "lat")}, ${formatearCoordenada(lng, "lng")}`;
+    }
+
+    function obtenerUbicacion() {
+        if (!navigator.geolocation) {
+            document.getElementById('gpsStatus').textContent = "⚠️ Navegador sin soporte GPS";
+            return;
+        }
+
+        if (gpsWatchId !== null) {
+            navigator.geolocation.clearWatch(gpsWatchId);
+        }
+
+        navigator.geolocation.getCurrentPosition(
+            actualizarCamposGPS,
+            err => console.log("GPS inicial:", err.message),
+            { enableHighAccuracy: false, timeout: 8000, maximumAge: 30000 }
+        );
+
+        gpsWatchId = navigator.geolocation.watchPosition(
+            actualizarCamposGPS,
+            err => {
+                console.log("GPS watch:", err.message);
+                if (!document.getElementById('lat').value) {
+                    document.getElementById('gpsStatus').textContent = "⚠️ Activa la ubicación del teléfono";
+                }
+            },
+            { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 }
+        );
+    }
+
+    function obtenerUbicacionForzada() {
+        return new Promise(resolve => {
+            if (!navigator.geolocation) return resolve();
+            navigator.geolocation.getCurrentPosition(
+                pos => {
+                    actualizarCamposGPS(pos);
+                    resolve();
+                },
+                () => resolve(),
+                { enableHighAccuracy: true, timeout: 5000, maximumAge: 30000 }
+            );
+        });
+    }
+
+    window.addEventListener('DOMContentLoaded', obtenerUbicacion);
+
+    async function subirAImgBB(fileInputId) {
+        const fileInput = document.getElementById(fileInputId);
+        if (!fileInput.files || fileInput.files.length === 0) return "";
+
+        log(`Subiendo ${fileInputId} a ImgBB...`);
+        const file = fileInput.files[0];
+        const formData = new FormData();
+        formData.append("image", file);
+
+        const res = await fetch(`https://api.imgbb.com/1/upload?key=${IMGBB_API_KEY}`, {
+            method: "POST",
+            body: formData
+        });
+        const result = await res.json();
+        if (result.success) {
+            log(`¡${fileInputId} subida con éxito!`);
+            return result.data.url;
+        } else {
+            throw new Error(result.error.message || "Error al subir imagen");
+        }
+    }
+
+    async function enviarRegistro() {
+        const btn = document.getElementById('btnEnviar');
+        btn.disabled = true;
+        document.getElementById('debugLog').innerHTML = "Procesando envío...";
+
+        try {
+            if (!document.getElementById('lat').value || !document.getElementById('lng').value) {
+                log("Obteniendo coordenadas GPS...");
+                await obtenerUbicacionForzada();
+            }
+
+            const urlIne = await subirAImgBB('fotoIne');
+            const urlFachada = await subirAImgBB('fotoFachada');
+
+            log("Enviando datos a Google Sheets...");
+
+            const latLimpia = formatearCoordenada(document.getElementById('lat').value, "lat");
+            const lngLimpia = formatearCoordenada(document.getElementById('lng').value, "lng");
+
+            const params = new URLSearchParams({
+                rutaPreventa: document.getElementById('rutaPreventa').value,
+                frecuencia: document.getElementById('frecuencia').value,
+                rutaReparto: document.getElementById('rutaReparto').value,
+                nombreNegocio: document.getElementById('nombreNegocio').value,
+                calle: document.getElementById('calle').value,
+                colonia: document.getElementById('colonia').value,
+                numero: document.getElementById('numero').value,
+                ciudad: document.getElementById('ciudad').value,
+                estado: document.getElementById('estado').value,
+                responsable: document.getElementById('responsable').value,
+                telefono: document.getElementById('telefono').value,
+                lat: latLimpia || "S/N",
+                lng: lngLimpia || "S/N",
+                urlIne: urlIne,
+                urlFachada: urlFachada,
+                pedido: document.getElementById('pedido').value
+            });
+
+            const urlFinal = APPS_SCRIPT_URL + "?" + params.toString();
+
+            await fetch(urlFinal, {
+                method: "GET",
+                mode: "no-cors"
+            });
+
+            log("¡Registro enviado a Google Sheets!");
+            alert("¡Registro guardado con éxito!");
+            document.getElementById('formNegocio').reset();
+            obtenerUbicacion();
+            btn.disabled = false;
+
+        } catch (error) {
+            log("Error: " + error.message);
+            alert("Error: " + error.message);
+            btn.disabled = false;
+        }
+    }
 </script>
 
-
 </body>
-
 </html>
